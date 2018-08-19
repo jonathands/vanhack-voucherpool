@@ -17,4 +17,4 @@ This App is a Slim App and has a single page meant to test the 3 API endpoints
 * POST /voucher/use - takes an email and a code , checks if it has a usage date , else it sets the date and return the discount
 
 
-SQL dumb of the database is under /files/www/vhtest/vhtest-postgre-schema.sql
+SQL dump of the database is under /files/www/vhtest/vhtest-postgre-schema.sql
