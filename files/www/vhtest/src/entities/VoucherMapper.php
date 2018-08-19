@@ -18,7 +18,7 @@ class VoucherMapper extends DbMapper
                     " RETURNING voucher_id";
 
                 $stmt = $this->db->prepare($sql);
-                var_dump($entity);
+
                 $stmt->execute([
                     "code" => $entity->getCode(),
                     "offer_id" => $entity->getOfferId(),

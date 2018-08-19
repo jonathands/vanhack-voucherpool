@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "a4ae3a68-885e-4e2f-a171-0c588ae94960",
+		"name": "VoucherPool-Tests",
+		"description": "VoucherPool Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost/vouchers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost/vouchers",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"vouchers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost/vouchers/customer/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost/vouchers/customer/1",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"vouchers",
+						"customer",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost/voucher/save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "expires_at",
+							"value": "01/01/2020",
+							"sessionValue": "01/01/2020",
+							"type": "text"
+						},
+						{
+							"key": "discount",
+							"value": "10",
+							"sessionValue": "10",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "jonathands@gmail.com",
+							"sessionValue": "jonathands@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "10% discount",
+							"sessionValue": "10% discount",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/voucher/save",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"voucher",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost/voucher/use",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "code",
+							"value": "S0TE6IEZ",
+							"sessionValue": "S0TE6IEZ",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "jonathands@gmail.com",
+							"sessionValue": "jonathands@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/voucher/use",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"voucher",
+						"use"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
