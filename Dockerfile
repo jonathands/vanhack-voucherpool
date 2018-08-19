@@ -24,7 +24,11 @@ RUN echo -e "${APK_REPOSITORIES}" >> /etc/apk/repositories && \
       php7-fpm \
       php7-openssl \
       php7-phar \
+	  php7-session \
       php7-zlib \
+      php7-pdo \
+      php7-pdo_pgsql \
+      php7-pgsql \
       php7-mbstring \
       php7-json \
       nginx \
@@ -49,7 +53,7 @@ RUN addgroup -g $HOST_UID $HOST_USER && adduser -s /bin/sh -D -u $HOST_UID -G $H
     curl -sS https://getcomposer.org/installer | /usr/bin/php -- --install-dir=/usr/local/bin --filename=composer
 
 # support for parallel installs. Faster composer.
-RUN composer global require hirak/prestissimo
+#RUN composer global require hirak/prestissimo
 
 # Configure nginx
 COPY ./files/nginx/nginx.conf /etc/nginx/nginx.conf
