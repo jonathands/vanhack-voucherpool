@@ -28,6 +28,20 @@ $app->get('/vouchers', function (Request $request, Response $response, array $ar
     }
 });
 
+// List all Vouchers
+$app->get('/vouchers/customer/{id}', function (Request $request, Response $response, array $args) {
+    try
+    {    
+        $VoucherPool = new VoucherPool($this->db);    
+        $CustomerEntity = new CustomerEntity($args);
+        return $response->withJson($VoucherPool->getVoucherBycustomer($CustomerEntity));
+    }    
+    catch(Exception $e)
+    {
+        return $response->withJson($e->getMessage(),400);   
+    }
+});
+
 // Save new voucher
 $app->post('/voucher/save', function (Request $request, Response $response, array $args) {
     try

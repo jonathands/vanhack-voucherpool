@@ -24,6 +24,12 @@ class VoucherPool
         return $this->voucherMapper->getList();
     }
 
+    public function getVoucherBycustomer($customer)
+    {
+        $voucherByCustomer = $this->voucherMapper->getOneByFilter(["customer_id" => $customer->getId()]);
+
+        return $voucherByCustomer;
+    }
     public function getCustomers()
     {
         return $this->customerMapper->getList();
@@ -34,6 +40,11 @@ class VoucherPool
         $this->voucherMapper->get($voucherEntity);
     }
 
+    public function removeVoucher($voucherEntity)
+    {
+        return $this->voucherMapper->delete($voucherEntity);
+    }
+    
     public function createVouchersForCostumers($customers,$offer)
     {
         $offer = $this->offerMapper->save($offer);
@@ -58,11 +69,6 @@ class VoucherPool
         }
 
         return  $vouchers;
-    }
-    
-    public function removeVoucher($voucherEntity)
-    {
-        return $this->voucherMapper->delete($voucherEntity);
     }
     
     public function useVoucher($voucher,$customer)
