@@ -34,7 +34,7 @@ class VoucherPoolTest extends BaseTestCase
         return $body[0]->code;
     }
 
-    //Add Same voucher twice
+    //Use a voucher
     /**
      * @depends testAddVouchers
      */
@@ -58,7 +58,7 @@ class VoucherPoolTest extends BaseTestCase
     }
     
 
-    //Add Same voucher twice
+    //Use the Same voucher twice
     /**
      * @depends testUseVoucher
      */
@@ -75,6 +75,24 @@ class VoucherPoolTest extends BaseTestCase
         $this->assertSame(json_decode($response->getBody()->getContents()), "Voucher code already used");
         $this->assertSame($response->getStatusCode(), 400);
         return $voucherCode;
+    }
+    
+    //Use a voucher with wrong email
+    /**
+     * @depends testUseSameVoucher
+     */
+    public function testUseWrongCustomerVoucher($voucherCode)
+    {
+        $requestBody = array(
+            "code" => $voucherCode,
+            "email" => "notjonathands@gmail.com"
+            );
+
+        $response = $this->runApp('POST', '/voucher/use', $requestBody);
+
+        $response->getBody()->rewind();
+        $this->assertSame(json_decode($response->getBody()->getContents()), "No such Customer");
+        $this->assertSame($response->getStatusCode(), 400);
     }
     
     //List all vouchers created
