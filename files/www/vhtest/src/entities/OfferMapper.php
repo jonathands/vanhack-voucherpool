@@ -1,16 +1,14 @@
 <?php
-Namespace VoucherPool\Entity;
+namespace VoucherPool\Entity;
 
 class OfferMapper extends DbMapper
-{    
-    protected $entityName = "voucherpool.offer";  
-
+{
+    protected $entityName = "voucherpool.offer";
+    
     public function save($entity)
     {
-        try
-        {   
-            if(!$entity->getId())
-            {
+        try {
+            if (!$entity->getId()) {
                 $sql = " INSERT INTO ".$this->getEntityName()." ".
                     "  (name, discount,expires_at) ".
                     " VALUES ".
@@ -27,9 +25,7 @@ class OfferMapper extends DbMapper
 
                 $result = $stmt->fetch(\PDO::FETCH_ASSOC);
                 $entity->setId($result['offer_id']);
-            }
-            else
-            {
+            } else {
                 $sql = " UPDATE ".$this->getEntityName()." SET ".
                     "  name = :name, ".
                     "  discount = :discount, ".
@@ -44,18 +40,15 @@ class OfferMapper extends DbMapper
                     "name" => $entity->getName(),
                     "discount" => $entity->getDiscount(),
                     "expires_at" => $entity->getExpiresAt()->toFormat("d/m/Y")
-                ]);            
-
+                ]);
             }
 
-            if(!$result) {
+            if (!$result) {
                 throw new \Exception("could not save record");
             }
 
             return $entity;
-        }
-        catch (\PDOException $e) 
-        {
+        } catch (\PDOException $e) {
             if ($e->getCode() == 23505) {
                 throw new \Exception("Voucher code already exists");
             } else {
@@ -66,8 +59,7 @@ class OfferMapper extends DbMapper
 
     public function delete($entity)
     {
-        if($entity->getId())
-        {
+        if ($entity->getId()) {
             $sql = " DELETE FROM  ".$this->getEntityName() .
                         " WHERE offer_id = :id ";
 
@@ -78,9 +70,7 @@ class OfferMapper extends DbMapper
             ]);
 
             return $result;
-        } 
-        else
-        {
+        } else {
             throw new \Exception("Voucher does not exist");
         }
     }
@@ -110,7 +100,7 @@ class OfferMapper extends DbMapper
         $stmt->execute($filter);
  
         $results = [];
-        while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $results[] = new OfferEntity($row);
         }
         return $results;
@@ -139,30 +129,29 @@ class OfferMapper extends DbMapper
 
         $stmt = $this->db->query($sql);
         $results = [];
-        while($row = $stmt->fetch()) {
+        while ($row = $stmt->fetch()) {
             $results[] = new OfferEntity($row);
         }
         return $results;
     }
 
-    private function getSelect($filter=false)
+    private function getSelect($filter = false)
     {
         $sql = "SELECT o.offer_id, o.name, o.discount, o.expires_at ".
                 " FROM ".$this->getEntityName()." o ";
 
-        if(is_array($filter))
-        {
+        if (is_array($filter)) {
             $i = 0;
-            foreach($filter as $k => $v)
-            {
-                if(!$i)
+            foreach ($filter as $k => $v) {
+                if (!$i) {
                     $sql .= " WHERE o.".$k." = :$k";
-                else
+                } else {
                     $sql .= " o.".$k." = :$k";
+                }
                 $i++;
             }
-        }else{            
-            if($filter)
+        } else {
+            if ($filter)
                 $sql .= " WHERE o.offer_id = :id";
         }
         

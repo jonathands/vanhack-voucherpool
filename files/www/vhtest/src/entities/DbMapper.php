@@ -1,12 +1,13 @@
 <?php
-Namespace VoucherPool\Entity;
+namespace VoucherPool\Entity;
 
 abstract class DbMapper implements MapperInterface
 {
     protected $db;
     protected $entityName;
     
-    public function __construct($db) {
+    public function __construct($db) 
+    {
         $this->db = $db;
     }
 

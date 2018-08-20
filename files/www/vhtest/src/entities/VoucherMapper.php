@@ -1,16 +1,14 @@
 <?php
-Namespace VoucherPool\Entity;
+namespace VoucherPool\Entity;
 
 class VoucherMapper extends DbMapper
-{    
-    protected $entityName = "voucherpool.voucher";  
+{
+    protected $entityName = "voucherpool.voucher";
 
     public function save($entity)
     {
-        try
-        {   
-            if(!$entity->getId())
-            {
+        try {
+            if (!$entity->getId()) {
                 $sql = " INSERT INTO ".$this->getEntityName()." ".
                     "  (code, expires_at,offer_id,customer_id) ".
                     " VALUES ".
@@ -28,9 +26,7 @@ class VoucherMapper extends DbMapper
 
                 $result = $stmt->fetch(\PDO::FETCH_ASSOC);
                 $entity->setId($result['voucher_id']);
-            }
-            else
-            {
+            } else {
                 $sql = " UPDATE ".$this->getEntityName()." SET ".
                     "  code = :code, ".
                     "  offer_id = :offer_id, ".
@@ -49,18 +45,15 @@ class VoucherMapper extends DbMapper
                     "customer_id" => $entity->getCustomerId(),
                     "used_at" => $entity->getUsedAt(),
                     "expires_at" => $entity->getexpiresAt()->format('d/m/Y')
-                ]);            
-
+                ]);
             }
 
-            if(!$result) {
+            if (!$result) {
                 throw new \Exception("could not save record");
             }
 
             return $entity;
-        }
-        catch (\PDOException $e) 
-        {
+        } catch (\PDOException $e) {
             if ($e->getCode() == 23505) {
                 throw new \Exception("Voucher code already exists");
             } else {
@@ -69,10 +62,9 @@ class VoucherMapper extends DbMapper
         }
     }
 
-    public function saveUsage($voucherEntity,$customerEntity)
+    public function saveUsage($voucherEntity, $customerEntity)
     {
-        try
-        {
+        try {
             $sql = " UPDATE ".$this->getEntityName()." SET ".
                    "  used_at = :used_at ".
                    " WHERE ".
@@ -86,17 +78,14 @@ class VoucherMapper extends DbMapper
             ]);
 
             $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        }
-        catch (\PDOException $e) 
-        {
+        } catch (\PDOException $e) {
             throw $e;
-        }    
+        }
     }
 
     public function delete($entity)
     {
-        if($entity->getId())
-        {
+        if ($entity->getId()) {
             $sql = " DELETE FROM  ".$this->getEntityName() .
                         " WHERE voucher_id = :id ";
 
@@ -107,9 +96,7 @@ class VoucherMapper extends DbMapper
             ]);
 
             return $result;
-        } 
-        else
-        {
+        } else {
             throw new \Exception("Voucher does not exist");
         }
     }
@@ -124,9 +111,10 @@ class VoucherMapper extends DbMapper
         
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if($result)
+        if ($result) {
             $result = new VoucherEntity($result);
-
+        }
+        
         return $result;
     }
 
@@ -139,9 +127,7 @@ class VoucherMapper extends DbMapper
         $stmt->execute($filter);
  
         $results = [];
-        while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            if(isset($row["used_by"]))
-                $row["used_by"] = explode(",",$row["used_by"]);
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $results[] = new VoucherEntity($row);
         }
         return $results;
@@ -159,8 +145,6 @@ class VoucherMapper extends DbMapper
  
         $row = $stmt->fetch();
         
-        if(isset($row["used_by"]))
-            $row["used_by"] = explode(",",$row["used_by"]);
         $result = new VoucherEntity($row);
 
         return $result;
@@ -172,33 +156,33 @@ class VoucherMapper extends DbMapper
 
         $stmt = $this->db->query($sql);
         $results = [];
-        while($row = $stmt->fetch()) {
+        while ($row = $stmt->fetch()) {
             $results[] = new VoucherEntity($row);
         }
         return $results;
     }
 
-    private function getSelect($filter=false)
+    private function getSelect($filter = false)
     {
         $sql = "SELECT v.voucher_id, v.code, v.offer_id, v.customer_id, TO_CHAR(v.used_at :: DATE,'dd/mm/yyyy')  as used_at ,TO_CHAR(v.expires_at :: DATE,'dd/mm/yyyy')  as expires_at , c.email , o.name as offer_name, o.discount ".
                " FROM ".$this->getEntityName()." v ".
-               " LEFT JOIN voucherpool.customer c ON c.customer_id = v.customer_id ".            
+               " LEFT JOIN voucherpool.customer c ON c.customer_id = v.customer_id ".
                " LEFT JOIN voucherpool.offer o ON o.offer_id = v.offer_id ";
 
-        if(is_array($filter))
-        {
+        if (is_array($filter)) {
             $i = 0;
-            foreach($filter as $k => $v)
-            {
-                if(!$i)
+            foreach ($filter as $k => $v) {
+                if (!$i) {
                     $sql .= " WHERE v.".$k." = :$k";
-                else
+                } else {
                     $sql .= " v.".$k." = :$k";
+                }
                 $i++;
             }
-        }else{            
-            if($filter)
+        } else {
+            if ($filter) {
                 $sql .= " WHERE v.voucher_id = :id";
+            }
         }
         
         $sql .= " GROUP BY v.voucher_id, v.code, v.expires_at, c.email, o.name, o.discount ".

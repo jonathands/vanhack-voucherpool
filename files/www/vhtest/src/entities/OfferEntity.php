@@ -71,7 +71,7 @@ class OfferEntity implements \JsonSerializable
 
     public function setExpiresAt($expiresAt)
     {
-        $this->expiresAt = \DateTime::createFromFormat("d/m/Y",$expiresAt);
+        $this->expiresAt = \DateTime::createFromFormat("d/m/Y", $expiresAt);
 
         return $this;
     }

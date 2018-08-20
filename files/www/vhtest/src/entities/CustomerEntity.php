@@ -1,5 +1,6 @@
 <?php
-Namespace VoucherPool\Entity;
+namespace VoucherPool\Entity;
+
 use VoucherPool\Utils\JsonSerializeTrait;
 
 class CustomerEntity implements \JsonSerializable
@@ -12,17 +13,20 @@ class CustomerEntity implements \JsonSerializable
     protected $usedVouchers;
     protected $createdAt;
     
-    public function __construct(array $data) {
-        if(isset($data['id']))
+    public function __construct(array $data)
+    {
+        if (isset($data['id'])) {
             $this->id = $data['id'];
+        }
 
         $this->name = $data['name'];
         $this->email = $data['email'];
 
-        if(!isset($data['created_at']))
+        if (!isset($data['created_at'])) {
             $data['created_at'] = new \DateTime();
-        else
+        } else {
             $this->createdAt = $data['created_at'];
+        }
     }
 
     public function getName()
@@ -68,7 +72,7 @@ class CustomerEntity implements \JsonSerializable
 
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt =  \DateTime::createFromFormat("d/m/Y",$createdAt);
+        $this->createdAt =  \DateTime::createFromFormat("d/m/Y", $createdAt);
 
         return $this;
     }

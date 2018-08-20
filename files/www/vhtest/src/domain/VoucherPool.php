@@ -1,5 +1,5 @@
 <?php
-Namespace VoucherPool\Domain;
+namespace VoucherPool\Domain;
 
 use VoucherPool\Entity\VoucherMapper;
 use VoucherPool\Entity\VoucherEntity;
@@ -45,16 +45,14 @@ class VoucherPool
         return $this->voucherMapper->delete($voucherEntity);
     }
     
-    public function createVouchersForCostumers($customers,$offer)
+    public function createVouchersForCostumers($customers, $offer)
     {
         $offer = $this->offerMapper->save($offer);
 
         $vouchers = array();
-        foreach($customers as $costumer)
-        {
+        foreach ($customers as $costumer) {
             $costumerByEmail = $this->customerMapper->getOneByFilter(["email" => $costumer->getEmail()]);
-            if(false !== $costumerByEmail)
-            {
+            if (false !== $costumerByEmail) {
                 $costumer = $costumerByEmail;
             }
 
@@ -71,30 +69,25 @@ class VoucherPool
         return  $vouchers;
     }
     
-    public function useVoucher($voucher,$customer)
+    public function useVoucher($voucher, $customer)
     {
         $customerByEmail = $this->customerMapper->getOneByFilter(["email" => $customer->getEmail()]);
-        if(false !== $customerByEmail)
-        {
+        if (false !== $customerByEmail) {
             $customer = $customerByEmail;
-        }
-        else
-        {
+        } else {
             throw new \Exception("No such Customer");
         }
 
-        $voucher = $this->voucherMapper->getOneByFilter(["code" => $voucher->getCode()]);          
-        if($voucher)
-        {
-            if($voucher->getUsedAt())
+        $voucher = $this->voucherMapper->getOneByFilter(["code" => $voucher->getCode()]);
+        if ($voucher) {
+            if ($voucher->getUsedAt())
                 throw new \Exception("Voucher code already used");
 
-            $this->voucherMapper->saveUsage($voucher,$customer);
+            $this->voucherMapper->saveUsage($voucher, $customer);
+
             $offer = $this->offerMapper->getOne($voucher->getOfferId());
             return array("discount" => $offer->getDiscount());
-        }
-        else
-        {
+        } else {
             throw new \Exception("No such voucher");
         }
     }

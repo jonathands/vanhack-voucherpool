@@ -1,5 +1,5 @@
 <?php
-Namespace VoucherPool\Entity;
+namespace VoucherPool\Entity;
 
 interface MapperInterface
 {

@@ -1,33 +1,36 @@
 <?php
-Namespace VoucherPool\Entity;
+namespace VoucherPool\Entity;
 
 use VoucherPool\Utils\JsonSerializeTrait;
 
 class VoucherEntity implements \JsonSerializable
 {
-    use JsonSerializeTrait;    
+    use JsonSerializeTrait;
 
     protected $id;
     protected $code;
-    protected $expiresAt;     
-    protected $offerId;     
-    protected $customerId;      
-    protected $usedAt;      
+    protected $expiresAt;
+    protected $offerId;
+    protected $customerId;
+    protected $usedAt;
     
-    public function __construct(array $data) {
-        if(isset($data['voucher_id']))
+    public function __construct(array $data)
+    {
+        if (isset($data['voucher_id'])) {
             $this->id = $data['voucher_id'];
-        
+        }
+
         $this->offerId = $data['offer_id'];
         $this->customerId = $data['customer_id'];
         $this->code = $data['code'];
 
-        if(!isset($data['expires_at']))
+        if (!isset($data['expires_at'])) {
             $this->expiresAt = new \DateTime();
-        else
+        } else {
             $this->setexpiresAt($data['expires_at']);
-        
-        if(isset($data['used_at']))
+        }
+
+        if (isset($data['used_at']))
             $this->setUsedAt($data['used_at']);
     }
 
@@ -38,7 +41,7 @@ class VoucherEntity implements \JsonSerializable
 
     public function setExpiresAt($expiresAt)
     {
-        $this->expiresAt = \DateTime::createFromFormat("d/m/Y",$expiresAt);
+        $this->expiresAt = \DateTime::createFromFormat("d/m/Y", $expiresAt);
 
         return $this;
     }
@@ -74,7 +77,7 @@ class VoucherEntity implements \JsonSerializable
 
     public function setUsedAt($usedAt)
     {
-        $this->usedAt = \DateTime::createFromFormat("d/m/Y",$usedAt);
+        $this->usedAt = \DateTime::createFromFormat("d/m/Y", $usedAt);
 
         return $this;
     }
