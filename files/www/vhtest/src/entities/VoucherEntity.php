@@ -20,8 +20,14 @@ class VoucherEntity implements \JsonSerializable
             $this->id = $data['voucher_id'];
         }
 
-        $this->offerId = $data['offer_id'];
-        $this->customerId = $data['customer_id'];
+        if (isset($data['offer_id'])) {
+            $this->offerId = $data['offer_id'];
+        }
+        
+        if (isset($data['customer_id'])) {
+            $this->customerId = $data['customer_id'];
+        }
+
         $this->code = $data['code'];
 
         if (!isset($data['expires_at'])) {
@@ -30,8 +36,9 @@ class VoucherEntity implements \JsonSerializable
             $this->setexpiresAt($data['expires_at']);
         }
 
-        if (isset($data['used_at']))
+        if (isset($data['used_at'])) {
             $this->setUsedAt($data['used_at']);
+        }
     }
 
     public function getExpiresAt()

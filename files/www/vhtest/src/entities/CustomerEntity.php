@@ -19,7 +19,6 @@ class CustomerEntity implements \JsonSerializable
             $this->id = $data['id'];
         }
 
-        $this->name = $data['name'];
         $this->email = $data['email'];
 
         if (!isset($data['created_at'])) {

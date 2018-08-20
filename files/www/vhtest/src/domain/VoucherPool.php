@@ -80,8 +80,9 @@ class VoucherPool
 
         $voucher = $this->voucherMapper->getOneByFilter(["code" => $voucher->getCode()]);
         if ($voucher) {
-            if ($voucher->getUsedAt())
+            if ($voucher->getUsedAt()) {
                 throw new \Exception("Voucher code already used");
+            }
 
             $this->voucherMapper->saveUsage($voucher, $customer);
 

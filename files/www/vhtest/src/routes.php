@@ -32,7 +32,7 @@ $app->get('/vouchers/customer/{id}', function (Request $request, Response $respo
         $CustomerEntity = new CustomerEntity($args);
         return $response->withJson($VoucherPool->getVoucherBycustomer($CustomerEntity));
     } catch (Exception $e) {
-        return $response->withJson($e->getMessage(), 400);   
+        return $response->withJson($e->getMessage(), 400);
     }
 });
 

@@ -1,5 +1,5 @@
 <?php
-Namespace VoucherPool\Utils;
+namespace VoucherPool\Utils;
 
 class Randomizer
 {

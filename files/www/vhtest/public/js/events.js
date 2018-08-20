@@ -7,8 +7,9 @@ function loadVoucherGrid()
     ];
 
     let request = new XMLHttpRequest();
-    let agGridEl;
-    request.open('GET', '/vouchers');    
+    let elVoucherList = document.querySelector('#voucher_list');
+
+    request.open('GET', elVoucherList.dataset.endpoint);    
     request.onload = function() {
         if(request.status === 200) { 
             let gridOptions = {
@@ -18,9 +19,8 @@ function loadVoucherGrid()
                 rowData: JSON.parse(request.responseText)
             };
         
-            let elVoucherList = document.querySelector('#voucher_list');
             elVoucherList.innerHTML = "";
-            agGridEl = new agGrid.Grid(elVoucherList, gridOptions);
+            new agGrid.Grid(elVoucherList, gridOptions);
         } else {
             alert(request.responseText);
         } 
